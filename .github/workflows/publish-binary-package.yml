@@ -24,6 +24,22 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
+      - name: Compute next release tag
+        run: |
+          set -euo pipefail
+
+          latest_tag="$(git tag --list '[0-9]*.[0-9]*.[0-9]*' --sort=-version:refname | head -n 1 || true)"
+
+          if [ -z "${latest_tag}" ]; then
+            next_tag="1.0.0"
+          else
+            IFS='.' read -r major minor patch <<< "${latest_tag}"
+            next_tag="${major}.${minor}.$((patch + 1))"
+          fi
+
+          echo "Using release tag: ${next_tag}"
+          echo "VERSION_TAG=${next_tag}" >> "${GITHUB_ENV}"
+
       - name: Attempt XCFramework build
         continue-on-error: true
         run: |
@@ -66,15 +82,13 @@ jobs:
         run: |
           set -euo pipefail
 
-          version_tag="main-$(date -u +%Y%m%d%H%M%S)-$(git rev-parse --short HEAD)"
           zip_name="iTransmissionFramework.xcframework.zip"
 
           ditto -c -k --sequesterRsrc --keepParent Artifacts/iTransmissionFramework.xcframework "${zip_name}"
 
           checksum="$(swift package compute-checksum "${zip_name}")"
-          release_url="https://github.com/${GITHUB_REPOSITORY}/releases/download/${version_tag}/${zip_name}"
+          release_url="https://github.com/${GITHUB_REPOSITORY}/releases/download/${VERSION_TAG}/${zip_name}"
 
-          echo "VERSION_TAG=${version_tag}" >> "${GITHUB_ENV}"
           echo "ZIP_NAME=${zip_name}" >> "${GITHUB_ENV}"
           echo "CHECKSUM=${checksum}" >> "${GITHUB_ENV}"
           echo "RELEASE_URL=${release_url}" >> "${GITHUB_ENV}"
