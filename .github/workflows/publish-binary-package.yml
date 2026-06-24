@@ -33,10 +33,13 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
+          set -euo pipefail
+
           if [ -d Artifacts/iTransmissionFramework.xcframework ]; then
             exit 0
           fi
 
+          rm -rf /tmp/itransmission-release
           mkdir -p /tmp/itransmission-release
           gh release download \
             --repo "${GITHUB_REPOSITORY}" \
@@ -49,7 +52,15 @@ jobs:
           }
 
           rm -rf Artifacts
-          ditto -x -k /tmp/itransmission-release/iTransmissionFramework.xcframework.zip "${GITHUB_WORKSPACE}"
+          mkdir -p Artifacts
+          rm -rf /tmp/itransmission-unzip
+          mkdir -p /tmp/itransmission-unzip
+          ditto -x -k /tmp/itransmission-release/iTransmissionFramework.xcframework.zip /tmp/itransmission-unzip
+          test -d /tmp/itransmission-unzip/iTransmissionFramework.xcframework || {
+            echo "Release ZIP did not contain iTransmissionFramework.xcframework"
+            exit 1
+          }
+          mv /tmp/itransmission-unzip/iTransmissionFramework.xcframework Artifacts/iTransmissionFramework.xcframework
 
       - name: Prepare release inputs
         run: |
