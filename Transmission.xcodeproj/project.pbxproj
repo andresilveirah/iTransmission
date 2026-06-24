@@ -52,7 +52,7 @@
 		B0C8418F2B23805B005C28DC /* PrefViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = B0C8417C2B223FFC005C28DC /* PrefViewController.mm */; };
 		B0C841902B2384C9005C28DC /* TorrentViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = B0C8417E2B223FFC005C28DC /* TorrentViewController.mm */; };
 		B0C841942B23853E005C28DC /* WebViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = B0C841922B23853E005C28DC /* WebViewController.mm */; };
-		B0C914192B51C9FA00D3B68F /* iTransmissionFramework in Frameworks */ = {isa = PBXBuildFile; productRef = B0C914182B51C9FA00D3B68F /* iTransmissionFramework */; };
+		B0C914192B51C9FA00D3B68F /* iTransmissionFramework.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = B01D22682B470C2A009EEEC2 /* iTransmissionFramework.xcframework */; };
 		B0E08B8C2B4B28380049BFAF /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = B0E08B8B2B4B28380049BFAF /* FirebaseAnalytics */; };
 		B0E08B962B4B28550049BFAF /* FirebaseCrashlytics in Frameworks */ = {isa = PBXBuildFile; productRef = B0E08B952B4B28550049BFAF /* FirebaseCrashlytics */; };
 		B0E08B982B4B28B30049BFAF /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = B0E08B972B4B28B30049BFAF /* GoogleService-Info.plist */; };
@@ -74,7 +74,7 @@
 		B00C80CD2B1E35AF0087B129 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B00C80CE2B1E35AF0087B129 /* main.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = main.mm; sourceTree = "<group>"; };
 		B00C80D62B1E3A1F0087B129 /* curl.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = curl.xcframework; path = "../transmission-legacy/third-party/curl.xcframework"; sourceTree = "<group>"; };
-		B01D22682B470C2A009EEEC2 /* iTransmissionFramework.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = iTransmissionFramework.xcframework; path = "third-party/iTransmissionFramework.xcframework"; sourceTree = "<group>"; };
+		B01D22682B470C2A009EEEC2 /* iTransmissionFramework.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = iTransmissionFramework.xcframework; path = Artifacts/iTransmissionFramework.xcframework; sourceTree = "<group>"; };
 		B01D227B2B487B9D009EEEC2 /* NSKeyedUnarchiverAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSKeyedUnarchiverAdditions.h; sourceTree = "<group>"; };
 		B01D227C2B487B9D009EEEC2 /* NSKeyedUnarchiverAdditions.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = NSKeyedUnarchiverAdditions.mm; sourceTree = "<group>"; };
 		B01D227D2B487B9D009EEEC2 /* NSDataAdditions.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = NSDataAdditions.mm; sourceTree = "<group>"; };
@@ -161,7 +161,7 @@
 				B00C80DB2B1E3BA60087B129 /* curl.xcframework in Frameworks */,
 				B0E08B962B4B28550049BFAF /* FirebaseCrashlytics in Frameworks */,
 				B0E08B8C2B4B28380049BFAF /* FirebaseAnalytics in Frameworks */,
-				B0C914192B51C9FA00D3B68F /* iTransmissionFramework in Frameworks */,
+				B0C914192B51C9FA00D3B68F /* iTransmissionFramework.xcframework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -416,7 +416,6 @@
 			packageProductDependencies = (
 				B0E08B8B2B4B28380049BFAF /* FirebaseAnalytics */,
 				B0E08B952B4B28550049BFAF /* FirebaseCrashlytics */,
-				B0C914182B51C9FA00D3B68F /* iTransmissionFramework */,
 			);
 			productName = TransmissionPlus;
 			productReference = B00C80BA2B1E35AD0087B129 /* iTransmission.app */;
@@ -457,7 +456,6 @@
 			mainGroup = 29B97314FDCFA39411CA2CEA /* Transmission */;
 			packageReferences = (
 				B0E08B8A2B4B28380049BFAF /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
-				B0C914172B51C9FA00D3B68F /* XCRemoteSwiftPackageReference "iTransmissionFramework" */,
 			);
 			projectDirPath = "";
 			projectRoot = "";
@@ -998,14 +996,6 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		B0C914172B51C9FA00D3B68F /* XCRemoteSwiftPackageReference "iTransmissionFramework" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/alexsvitlov/iTransmissionFramework";
-			requirement = {
-				branch = main;
-				kind = branch;
-			};
-		};
 		B0E08B8A2B4B28380049BFAF /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
@@ -1017,11 +1007,6 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		B0C914182B51C9FA00D3B68F /* iTransmissionFramework */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = B0C914172B51C9FA00D3B68F /* XCRemoteSwiftPackageReference "iTransmissionFramework" */;
-			productName = iTransmissionFramework;
-		};
 		B0E08B8B2B4B28380049BFAF /* FirebaseAnalytics */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = B0E08B8A2B4B28380049BFAF /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;

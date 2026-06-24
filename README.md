@@ -38,6 +38,35 @@ Supports iOS 13 and up.
 
 Simply download or clone the project, open XCode and run the app.
 
+## Swift Package
+
+This repo also distributes torrent engine as Swift Package product named `iTransmissionBinary`.
+
+Muuvie should consume this repo as package dependency:
+
+```swift
+.package(url: "https://github.com/<org>/iTransmission.git", exact: "<tag>")
+```
+
+Then link product:
+
+```swift
+.product(name: "iTransmissionBinary", package: "iTransmission")
+```
+
+Recommended distribution mode:
+- Use Git URL + Git tag for shared app integration.
+- Use local path only for same-machine development.
+- Package resolves binary from GitHub Release asset `iTransmissionFramework.xcframework.zip`.
+
+Updating binary:
+- Rebuild `iTransmissionFramework.xcframework`.
+- Zip it as `iTransmissionFramework.xcframework.zip`.
+- Upload ZIP to GitHub Release for new tag.
+- Update checksum in `Package.swift`.
+
+More detail: [docs/swift-package.md](/Users/andreherculano/dev/secretcorp/iTransmission/docs/swift-package.md)
+
 ## How to install
 
 * **Sideloading (No Jailbreak):** 

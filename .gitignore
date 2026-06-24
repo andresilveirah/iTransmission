@@ -32,3 +32,7 @@ compile_commands.json
 
 # CMake user presets
 CMakeUserPresets.json
+
+# Local binary artifact hydration for app builds / release prep
+/Artifacts/
+/iTransmissionFramework.xcframework.zip
