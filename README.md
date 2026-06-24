@@ -69,7 +69,7 @@ Updating binary:
 - Update checksum in `Package.swift`.
 
 Automation:
-- GitHub Actions runs on every push to `main`.
+- GitHub Actions release flow is manual via `workflow_dispatch`.
 - It tries to build `Artifacts/iTransmissionFramework.xcframework`, then zips, checksums, updates `Package.swift`, commits, tags, and publishes a release asset.
 - Until a real in-repo build pipeline is added, workflow falls back to latest release asset as XCFramework input.
 

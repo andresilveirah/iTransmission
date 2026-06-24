@@ -13,7 +13,7 @@ Approach used:
 
 GitHub Actions workflow:
 
-- Runs on every push to `main`
+- Runs manually via GitHub Actions `workflow_dispatch`
 - Tries `scripts/build-xcframework.sh` first
 - If that script does not produce `Artifacts/iTransmissionFramework.xcframework`, it falls back to latest published release asset
 - Runs `scripts/make-self-contained-xcframework.sh` to fold `curl` into the XCFramework slices
@@ -28,6 +28,7 @@ Current limitation:
 
 - This repo still does not include engine source or build commands needed to rebuild XCFramework from scratch in CI.
 - Replace `scripts/build-xcframework.sh` with real build steps when that pipeline is available.
+- Release flow is intentionally manual now, to avoid accidental version churn on every merge to `main`.
 
 ## How Muuvie should consume it
 
