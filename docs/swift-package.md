@@ -2,6 +2,25 @@
 
 This repo ships `iTransmissionFramework.xcframework` to SwiftPM as binary product `iTransmissionBinary` through GitHub Release asset download.
 
+## Automation
+
+GitHub Actions workflow:
+
+- Runs on every push to `main`
+- Tries `scripts/build-xcframework.sh` first
+- If that script does not produce `Artifacts/iTransmissionFramework.xcframework`, it falls back to latest published release asset
+- Zips XCFramework
+- Computes SwiftPM checksum
+- Updates `Package.swift`
+- Commits manifest change back to `main`
+- Creates tag
+- Publishes matching GitHub Release with ZIP asset
+
+Current limitation:
+
+- This repo still does not include engine source or build commands needed to rebuild XCFramework from scratch in CI.
+- Replace `scripts/build-xcframework.sh` with real build steps when that pipeline is available.
+
 ## How Muuvie should consume it
 
 Preferred distribution flow:

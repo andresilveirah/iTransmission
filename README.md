@@ -65,6 +65,11 @@ Updating binary:
 - Upload ZIP to GitHub Release for new tag.
 - Update checksum in `Package.swift`.
 
+Automation:
+- GitHub Actions runs on every push to `main`.
+- It tries to build `Artifacts/iTransmissionFramework.xcframework`, then zips, checksums, updates `Package.swift`, commits, tags, and publishes a release asset.
+- Until a real in-repo build pipeline is added, workflow falls back to latest release asset as XCFramework input.
+
 More detail: [docs/swift-package.md](/Users/andreherculano/dev/secretcorp/iTransmission/docs/swift-package.md)
 
 ## How to install

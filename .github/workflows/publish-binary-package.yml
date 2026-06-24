@@ -1,0 +1,102 @@
+name: Publish Binary Package
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: write
+
+jobs:
+  publish:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: macos-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Configure git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+      - name: Attempt XCFramework build
+        continue-on-error: true
+        run: |
+          bash scripts/build-xcframework.sh
+
+      - name: Hydrate XCFramework from latest release asset if build output is missing
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if [ -d Artifacts/iTransmissionFramework.xcframework ]; then
+            exit 0
+          fi
+
+          mkdir -p /tmp/itransmission-release
+          gh release download \
+            --repo "${GITHUB_REPOSITORY}" \
+            --pattern "iTransmissionFramework.xcframework.zip" \
+            --dir /tmp/itransmission-release
+
+          test -f /tmp/itransmission-release/iTransmissionFramework.xcframework.zip || {
+            echo "No XCFramework build output and no previous release asset found."
+            exit 1
+          }
+
+          rm -rf Artifacts
+          ditto -x -k /tmp/itransmission-release/iTransmissionFramework.xcframework.zip "${GITHUB_WORKSPACE}"
+
+      - name: Prepare release inputs
+        run: |
+          set -euo pipefail
+
+          version_tag="main-$(date -u +%Y%m%d%H%M%S)-$(git rev-parse --short HEAD)"
+          zip_name="iTransmissionFramework.xcframework.zip"
+
+          ditto -c -k --sequesterRsrc --keepParent Artifacts/iTransmissionFramework.xcframework "${zip_name}"
+
+          checksum="$(swift package compute-checksum "${zip_name}")"
+          release_url="https://github.com/${GITHUB_REPOSITORY}/releases/download/${version_tag}/${zip_name}"
+
+          echo "VERSION_TAG=${version_tag}" >> "${GITHUB_ENV}"
+          echo "ZIP_NAME=${zip_name}" >> "${GITHUB_ENV}"
+          echo "CHECKSUM=${checksum}" >> "${GITHUB_ENV}"
+          echo "RELEASE_URL=${release_url}" >> "${GITHUB_ENV}"
+
+      - name: Update Package.swift
+        run: |
+          set -euo pipefail
+
+          perl -0pi -e 's#url: "https://github\.com/[^"]+/releases/download/[^"]+/iTransmissionFramework\.xcframework\.zip",\n\s+checksum: "[^"]+"#url: "'"${RELEASE_URL}"'",\n            checksum: "'"${CHECKSUM}"'"#' Package.swift
+
+      - name: Commit manifest update
+        run: |
+          set -euo pipefail
+
+          git add Package.swift
+          git commit -m "Update binary package release to ${VERSION_TAG} [skip ci]"
+          git push origin HEAD:main
+
+      - name: Create and push tag
+        run: |
+          git tag "${VERSION_TAG}"
+          git push origin "${VERSION_TAG}"
+
+      - name: Publish release asset
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create "${VERSION_TAG}" "${ZIP_NAME}" \
+            --repo "${GITHUB_REPOSITORY}" \
+            --title "${VERSION_TAG}" \
+            --notes "Automated binary package release for ${GITHUB_SHA}" \
+            --verify-tag
+
+      - name: Validate published package manifest
+        run: |
+          swift package describe
