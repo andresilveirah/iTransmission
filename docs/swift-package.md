@@ -14,6 +14,8 @@ Approach used:
 GitHub Actions workflow:
 
 - Runs manually via GitHub Actions `workflow_dispatch`
+- Accepts optional `version` input
+- If `version` is blank, computes next patch version from latest semver tag
 - Tries `scripts/build-xcframework.sh` first
 - If that script does not produce `Artifacts/iTransmissionFramework.xcframework`, it falls back to latest published release asset
 - Runs `scripts/make-self-contained-xcframework.sh` to fold `curl` into the XCFramework slices

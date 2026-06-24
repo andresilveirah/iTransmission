@@ -70,6 +70,8 @@ Updating binary:
 
 Automation:
 - GitHub Actions release flow is manual via `workflow_dispatch`.
+- Workflow accepts optional `version` input.
+- If `version` is left blank, workflow uses next patch version after latest semver tag.
 - It tries to build `Artifacts/iTransmissionFramework.xcframework`, then zips, checksums, updates `Package.swift`, commits, tags, and publishes a release asset.
 - Until a real in-repo build pipeline is added, workflow falls back to latest release asset as XCFramework input.
 
