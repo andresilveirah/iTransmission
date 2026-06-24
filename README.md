@@ -42,6 +42,8 @@ Simply download or clone the project, open XCode and run the app.
 
 This repo also distributes torrent engine as Swift Package product named `iTransmissionBinary`.
 
+Consumer apps only need standard SwiftPM integration. No manual `curl` framework search paths or `OTHER_LDFLAGS` hacks are required.
+
 Muuvie should consume this repo as package dependency:
 
 ```swift
@@ -58,6 +60,7 @@ Recommended distribution mode:
 - Use Git URL + Git tag for shared app integration.
 - Use local path only for same-machine development.
 - Package resolves binary from GitHub Release asset `iTransmissionFramework.xcframework.zip`.
+- `curl` is folded into `iTransmissionFramework.xcframework`, so downstream apps do not link `curl` separately.
 
 Updating binary:
 - Rebuild `iTransmissionFramework.xcframework`.

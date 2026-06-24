@@ -12,8 +12,8 @@ let package = Package(
     targets: [
         .binaryTarget(
             name: "iTransmissionFramework",
-            url: "https://github.com/andresilveirah/iTransmission/releases/download/1.0.1/iTransmissionFramework.xcframework.zip",
-            checksum: "9e81c757e4d6cc8770d4a85437ff82d169d5b8fc38be59d07c5336f6441aa45c"
+            url: "https://github.com/andresilveirah/iTransmission/releases/download/1.0.2/iTransmissionFramework.xcframework.zip",
+            checksum: "a2902b007eaeeff10471c4373fadaa66503b15cee8ecd3339921e7685620272c"
         )
     ]
 )

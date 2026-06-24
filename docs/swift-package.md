@@ -2,6 +2,13 @@
 
 This repo ships `iTransmissionFramework.xcframework` to SwiftPM as binary product `iTransmissionBinary` through GitHub Release asset download.
 
+Approach used:
+
+- `iTransmissionFramework.xcframework` is rebuilt as self-contained.
+- `curl` is folded into the static `libITransmission.a` slices before packaging.
+- Consumer apps only depend on product `iTransmissionBinary`.
+- No extra SwiftPM product, no manual `-framework curl`, no manual framework search paths.
+
 ## Automation
 
 GitHub Actions workflow:
@@ -9,6 +16,7 @@ GitHub Actions workflow:
 - Runs on every push to `main`
 - Tries `scripts/build-xcframework.sh` first
 - If that script does not produce `Artifacts/iTransmissionFramework.xcframework`, it falls back to latest published release asset
+- Runs `scripts/make-self-contained-xcframework.sh` to fold `curl` into the XCFramework slices
 - Zips XCFramework
 - Computes SwiftPM checksum
 - Updates `Package.swift`

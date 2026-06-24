@@ -78,6 +78,10 @@ jobs:
           }
           mv /tmp/itransmission-unzip/iTransmissionFramework.xcframework Artifacts/iTransmissionFramework.xcframework
 
+      - name: Fold curl into XCFramework
+        run: |
+          bash scripts/make-self-contained-xcframework.sh
+
       - name: Prepare release inputs
         run: |
           set -euo pipefail
